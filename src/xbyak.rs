@@ -43,6 +43,10 @@ extern "C" {
     fn _mov_r_i(this: *mut XbyakCore, reg: i32, n: i32);
     fn _mov_r_r(this: *mut XbyakCore, reg1: i32, reg2: i32);
 
+    fn _push_i(this: *mut XbyakCore, n: i32);
+    fn _push_r(this: *mut XbyakCore, reg: i32);
+    fn _pop(this: *mut XbyakCore, reg: i32);
+
     fn _add(this: *mut XbyakCore);
     fn _sub(this: *mut XbyakCore);
 
@@ -73,5 +77,27 @@ impl Move<XbyakReg, i32> for Xbyak {
 impl Move<XbyakReg, XbyakReg> for Xbyak {
     fn mov(&mut self, t: XbyakReg, u: XbyakReg) {
         unsafe { _mov_r_r(self.jit, t as i32, u as i32) }
+    }
+}
+
+pub trait Push<T> {
+    fn push(&mut self, t: T);
+}
+impl Push<i32> for Xbyak {
+    fn push(&mut self, t: i32) {
+        unsafe { _push_i(self.jit, t) }
+    }
+}
+impl Push<XbyakReg> for Xbyak {
+    fn push(&mut self, t: XbyakReg) {
+        unsafe { _push_r(self.jit, t as i32) }
+    }
+}
+pub trait Pop {
+    fn pop(&mut self, t: XbyakReg);
+}
+impl Pop for Xbyak {
+    fn pop(&mut self, t: XbyakReg) {
+        unsafe { _pop(self.jit, t as i32) }
     }
 }
