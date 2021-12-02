@@ -1,5 +1,9 @@
 pub enum XbyakCore {}
 
+pub enum XbyakReg {
+    Rax,
+}
+
 pub struct Xbyak {
     jit: *mut XbyakCore,
 }
@@ -25,15 +29,27 @@ impl Xbyak {
 }
 
 extern "C" {
-    fn _mov(this: *mut XbyakCore, n: i32);
+    fn _mov_r_i(this: *mut XbyakCore, reg: i32, n: i32);
+    fn _mov_r_r(this: *mut XbyakCore, reg1: i32, reg2: i32);
     fn _ret(this: *mut XbyakCore);
 }
 
 impl Xbyak {
-    pub fn mov(&mut self, n: i32) {
-        unsafe { _mov(self.jit, n) };
-    }
     pub fn ret(&mut self) {
         unsafe { _ret(self.jit) };
+    }
+}
+
+pub trait Move<T, U> {
+    fn mov(&mut self, t: T, u: U);
+}
+impl Move<XbyakReg, i32> for Xbyak {
+    fn mov(&mut self, t: XbyakReg, u: i32) {
+        unsafe { _mov_r_i(self.jit, t as i32, u) }
+    }
+}
+impl Move<XbyakReg, XbyakReg> for Xbyak {
+    fn mov(&mut self, t: XbyakReg, u: XbyakReg) {
+        unsafe { _mov_r_r(self.jit, t as i32, u as i32) }
     }
 }

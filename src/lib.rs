@@ -1,9 +1,9 @@
 mod xbyak;
-use xbyak::Xbyak;
+use xbyak::{Xbyak, XbyakReg, Move};
 
 pub fn cc() -> i32 {
     let mut xbyak = Xbyak::new();
-    xbyak.mov(42);
+    xbyak.mov(XbyakReg::Rax, 42);
     xbyak.ret();
     let result = xbyak.gen_code();
     xbyak.delete();
