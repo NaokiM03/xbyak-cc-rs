@@ -5,6 +5,12 @@ pub struct Code {
 }
 
 impl Code {
+    pub fn cur(&self) -> usize {
+        self.cur
+    }
+}
+
+impl Code {
     pub fn new(s: &str) -> Self {
         Code {
             chars: s.chars().collect(),
@@ -22,6 +28,12 @@ impl Code {
 
     pub fn is_not_end(&self) -> bool {
         self.chars.len() > self.cur
+    }
+
+    pub fn take_char(&mut self) -> char {
+        let result = self.peek();
+        self.next();
+        result
     }
 
     pub fn take_number(&mut self) -> i32 {

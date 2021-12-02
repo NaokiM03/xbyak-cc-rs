@@ -2,30 +2,29 @@ mod xbyak;
 use xbyak::{reg::*, Move, Xbyak};
 
 mod code;
-pub use code::Code;
+use code::Code;
+
+mod token;
+use token::Tokens;
 
 pub fn cc(s: &str) -> i32 {
     let mut code = Code::new(s);
 
-    let mut xbyak = Xbyak::new();
-    xbyak.mov(RAX, code.take_number());
+    let mut tokens = Tokens::tokenize(&mut code);
 
-    while code.is_not_end() {
-        if code.peek() == '+' {
-            code.next();
-            xbyak.mov(RDI, code.take_number());
+    let mut xbyak = Xbyak::new();
+    xbyak.mov(RAX, tokens.expect_number());
+
+    while tokens.is_not_end() {
+        if tokens.consume('+') {
+            xbyak.mov(RDI, tokens.expect_number());
             xbyak.add();
             continue;
         }
 
-        if code.peek() == '-' {
-            code.next();
-            xbyak.mov(RDI, code.take_number());
-            xbyak.sub();
-            continue;
-        }
-
-        panic!("char: {}", code.peek().to_string());
+        tokens.expect('-');
+        xbyak.mov(RDI, tokens.expect_number());
+        xbyak.sub();
     }
 
     xbyak.ret();
@@ -39,4 +38,5 @@ fn test() {
     assert_eq!(cc("0"), 0);
     assert_eq!(cc("42"), 42);
     assert_eq!(cc("5+20-4"), 21);
+    assert_eq!(cc(" 12 + 34 - 5"), 41);
 }
