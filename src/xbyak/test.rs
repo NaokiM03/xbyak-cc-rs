@@ -1,4 +1,4 @@
-use super::{reg::*, Move, Pop, Push, Xbyak};
+use super::{reg::*, Add, Move, Pop, Push, Ret, Sub, Xbyak};
 
 #[test]
 fn test_mov_r_i() {

@@ -53,19 +53,6 @@ extern "C" {
     fn _ret(this: *mut XbyakCore);
 }
 
-impl Xbyak {
-    pub fn add(&mut self) {
-        unsafe { _add(self.jit) }
-    }
-    pub fn sub(&mut self) {
-        unsafe { _sub(self.jit) }
-    }
-
-    pub fn ret(&mut self) {
-        unsafe { _ret(self.jit) };
-    }
-}
-
 pub trait Move<T, U> {
     fn mov(&mut self, t: T, u: U);
 }
@@ -99,5 +86,31 @@ pub trait Pop {
 impl Pop for Xbyak {
     fn pop(&mut self, t: XbyakReg) {
         unsafe { _pop(self.jit, t as i32) }
+    }
+}
+
+pub trait Add {
+    fn add(&mut self);
+}
+impl Add for Xbyak {
+    fn add(&mut self) {
+        unsafe { _add(self.jit) }
+    }
+}
+pub trait Sub {
+    fn sub(&mut self);
+}
+impl Sub for Xbyak {
+    fn sub(&mut self) {
+        unsafe { _sub(self.jit) }
+    }
+}
+
+pub trait Ret {
+    fn ret(&mut self);
+}
+impl Ret for Xbyak {
+    fn ret(&mut self) {
+        unsafe { _ret(self.jit) };
     }
 }
