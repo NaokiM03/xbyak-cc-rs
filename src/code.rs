@@ -12,15 +12,15 @@ impl Code {
         }
     }
 
-    fn next(&mut self) {
+    pub fn next(&mut self) {
         self.pos += 1;
     }
 
-    fn peek(&self) -> char {
+    pub fn peek(&self) -> char {
         self.chars[self.pos]
     }
 
-    fn is_not_end(&self) -> bool {
+    pub fn is_not_end(&self) -> bool {
         self.chars.len() > self.pos
     }
 
