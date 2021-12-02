@@ -1,3 +1,6 @@
+use xbyak_cc_rs::cc;
+
 fn main() {
-    println!("Hello, world!");
+    let result = cc();
+    println!("{}", result);
 }
