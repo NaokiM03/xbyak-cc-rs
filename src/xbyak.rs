@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod test;
+
 pub enum XbyakCore {}
 
 pub enum XbyakReg {
@@ -71,52 +74,4 @@ impl Move<XbyakReg, XbyakReg> for Xbyak {
     fn mov(&mut self, t: XbyakReg, u: XbyakReg) {
         unsafe { _mov_r_r(self.jit, t as i32, u as i32) }
     }
-}
-
-#[test]
-fn test_mov_r_i() {
-    let mut xbyak = Xbyak::new();
-    xbyak.mov(XbyakReg::Rax, 1);
-    xbyak.ret();
-    let result = xbyak.gen_code();
-    xbyak.delete();
-    assert_eq!(result, 1);
-}
-
-#[test]
-fn test_mov_r_r() {
-    let mut xbyak = Xbyak::new();
-    xbyak.mov(XbyakReg::Rax, 1);
-    xbyak.mov(XbyakReg::Rdi, 2);
-    xbyak.mov(XbyakReg::Rax, XbyakReg::Rdi);
-    xbyak.ret();
-    let result = xbyak.gen_code();
-    xbyak.delete();
-    assert_eq!(result, 2);
-}
-
-#[test]
-fn test_add() {
-    let mut xbyak = Xbyak::new();
-    xbyak.mov(XbyakReg::Rax, 1);
-    xbyak.mov(XbyakReg::Rdi, 2);
-    xbyak.add();
-    xbyak.ret();
-    let result = xbyak.gen_code();
-    xbyak.delete();
-    assert_eq!(result, 3);
-
-}
-
-#[test]
-fn test_sub() {
-    let mut xbyak = Xbyak::new();
-    xbyak.mov(XbyakReg::Rax, 1);
-    xbyak.mov(XbyakReg::Rdi, 2);
-    xbyak.sub();
-    xbyak.ret();
-    let result = xbyak.gen_code();
-    xbyak.delete();
-    assert_eq!(result, -1);
-
 }
