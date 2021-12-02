@@ -4,6 +4,12 @@ pub enum XbyakReg {
     Rax,
     Rdi,
 }
+
+pub mod reg {
+    use super::XbyakReg;
+
+    pub const RAX: XbyakReg = XbyakReg::Rax;
+    pub const RDI: XbyakReg = XbyakReg::Rdi;
 }
 
 pub struct Xbyak {
