@@ -4,6 +4,7 @@ class XbyakCore : public Xbyak::CodeGenerator
 {
 public:
     Xbyak::Reg64 reg_rax;
+    Xbyak::Reg64 reg_rdi;
 
     Xbyak::Reg64 reg_from_int(int n)
     {
@@ -11,6 +12,8 @@ public:
         {
         case 0:
             return reg_rax;
+        case 1:
+            return reg_rdi;
         default:
             throw "Error: failed to parse int to Xbyak::Reg64";
         }
@@ -19,6 +22,7 @@ public:
     XbyakCore()
     {
         reg_rax = rax;
+        reg_rdi = rdi;
     }
 
     void _mov(Xbyak::Reg64 reg, int n)
@@ -28,6 +32,15 @@ public:
     void _mov(Xbyak::Reg64 reg1, Xbyak::Reg64 reg2)
     {
         mov(reg1, reg2);
+    }
+
+    void _add()
+    {
+        add(rax, rdi);
+    }
+    void _sub()
+    {
+        sub(rax, rdi);
     }
 
     void _ret()
@@ -58,6 +71,16 @@ extern "C" void _mov_r_r(XbyakCore x, int reg1, int reg2)
 {
     x._mov(x.reg_from_int(reg1), x.reg_from_int(reg2));
 }
+
+extern "C" void _add(XbyakCore x)
+{
+    x._add();
+}
+extern "C" void _sub(XbyakCore x)
+{
+    x._sub();
+}
+
 extern "C" void _ret(XbyakCore x)
 {
     x._ret();

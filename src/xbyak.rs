@@ -2,6 +2,8 @@ pub enum XbyakCore {}
 
 pub enum XbyakReg {
     Rax,
+    Rdi,
+}
 }
 
 pub struct Xbyak {
@@ -31,10 +33,21 @@ impl Xbyak {
 extern "C" {
     fn _mov_r_i(this: *mut XbyakCore, reg: i32, n: i32);
     fn _mov_r_r(this: *mut XbyakCore, reg1: i32, reg2: i32);
+
+    fn _add(this: *mut XbyakCore);
+    fn _sub(this: *mut XbyakCore);
+
     fn _ret(this: *mut XbyakCore);
 }
 
 impl Xbyak {
+    pub fn add(&mut self) {
+        unsafe { _add(self.jit) }
+    }
+    pub fn sub(&mut self) {
+        unsafe { _sub(self.jit) }
+    }
+
     pub fn ret(&mut self) {
         unsafe { _ret(self.jit) };
     }
