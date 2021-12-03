@@ -52,7 +52,13 @@ impl Tokens {
                 continue;
             }
 
-            if code.peek() == '+' || code.peek() == '-' {
+            if code.peek() == '+'
+                || code.peek() == '-'
+                || code.peek() == '*'
+                || code.peek() == '/'
+                || code.peek() == '('
+                || code.peek() == ')'
+            {
                 let pos = code.cur();
                 tokens
                     .inner
