@@ -94,17 +94,17 @@ extern "C" void _mov_r_r(XbyakCore x, int reg1, int reg2)
     x._mov(x.reg_from_int(reg1), x.reg_from_int(reg2));
 }
 
-extern "C" void _push_i(XbyakCore c, int n)
+extern "C" void _push_i(XbyakCore x, int n)
 {
-    c._push(n);
+    x._push(n);
 }
-extern "C" void _push_r(XbyakCore c, int reg)
+extern "C" void _push_r(XbyakCore x, int reg)
 {
-    c._push(c.reg_from_int(reg));
+    x._push(x.reg_from_int(reg));
 }
-extern "C" void _pop(XbyakCore c, int reg)
+extern "C" void _pop(XbyakCore x, int reg)
 {
-    c._pop(c.reg_from_int(reg));
+    x._pop(x.reg_from_int(reg));
 }
 
 extern "C" void _add(XbyakCore x)
