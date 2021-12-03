@@ -1,4 +1,4 @@
-use super::{reg::*, Add, Move, Pop, Push, Ret, Sub, Xbyak};
+use super::{reg::*, Add, Div, Move, Mul, Pop, Push, Ret, Sub, Xbyak};
 
 #[test]
 fn test_mov_r_i() {
@@ -44,6 +44,30 @@ fn test_sub() {
     let result = xbyak.gen_code();
     xbyak.delete();
     assert_eq!(result, -1);
+}
+
+#[test]
+fn test_mul() {
+    let mut xbyak = Xbyak::new();
+    xbyak.mov(RAX, 2);
+    xbyak.mov(RDI, 3);
+    xbyak.mul();
+    xbyak.ret();
+    let result = xbyak.gen_code();
+    xbyak.delete();
+    assert_eq!(result, 6);
+}
+
+#[test]
+fn test_div() {
+    let mut xbyak = Xbyak::new();
+    xbyak.mov(RAX, 6);
+    xbyak.mov(RDI, 2);
+    xbyak.div();
+    xbyak.ret();
+    let result = xbyak.gen_code();
+    xbyak.delete();
+    assert_eq!(result, 3);
 }
 
 #[test]

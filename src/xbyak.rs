@@ -49,6 +49,8 @@ extern "C" {
 
     fn _add(this: *mut XbyakCore);
     fn _sub(this: *mut XbyakCore);
+    fn _mul(this: *mut XbyakCore);
+    fn _div(this: *mut XbyakCore);
 
     fn _ret(this: *mut XbyakCore);
 }
@@ -105,6 +107,23 @@ impl Sub for Xbyak {
         unsafe { _sub(self.jit) }
     }
 }
+pub trait Mul {
+    fn mul(&mut self);
+}
+impl Mul for Xbyak {
+    fn mul(&mut self) {
+        unsafe { _mul(self.jit) }
+    }
+}
+pub trait Div {
+    fn div(&mut self);
+}
+impl Div for Xbyak {
+    fn div(&mut self) {
+        unsafe { _div(self.jit) }
+    }
+}
+
 
 pub trait Ret {
     fn ret(&mut self);

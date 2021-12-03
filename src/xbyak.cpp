@@ -55,6 +55,15 @@ public:
     {
         sub(rax, rdi);
     }
+    void _mul()
+    {
+        imul(rax, rdi);
+    }
+    void _div()
+    {
+        cqo();
+        idiv(rdi);
+    }
 
     void _ret()
     {
@@ -105,6 +114,14 @@ extern "C" void _add(XbyakCore x)
 extern "C" void _sub(XbyakCore x)
 {
     x._sub();
+}
+extern "C" void _mul(XbyakCore x)
+{
+    x._mul();
+}
+extern "C" void _div(XbyakCore x)
+{
+    x._div();
 }
 
 extern "C" void _ret(XbyakCore x)
