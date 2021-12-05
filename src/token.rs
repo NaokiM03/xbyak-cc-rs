@@ -94,31 +94,31 @@ impl Tokens {
     }
 
     pub fn consume(&mut self, op: char) -> bool {
-        if let TokenKind::Reserved(c) = self.peek().kind {
-            if c == op {
+        match self.peek().kind {
+            TokenKind::Reserved(c) if c == op => {
                 self.next();
-                return true;
+                true
             }
+            _ => false,
         }
-        false
     }
 
     pub fn expect(&mut self, op: char) {
-        if let TokenKind::Reserved(c) = self.peek().kind {
-            if c == op {
+        match self.peek().kind {
+            TokenKind::Reserved(c) if c == op => {
                 self.next();
-                return;
             }
+            _ => panic!("unexpect token. token: {:?}", self.peek()),
         }
-        panic!("unexpect token. token: {:?}", self.peek());
     }
 
     pub fn expect_number(&mut self) -> i32 {
-        if let TokenKind::Num(n) = self.peek().kind {
-            self.next();
-            n
-        } else {
-            panic!("expect number. but token: {:?}", self.peek());
+        match self.peek().kind {
+            TokenKind::Num(n) => {
+                self.next();
+                n
+            }
+            _ => panic!("expect number. but token: {:?}", self.peek()),
         }
     }
 }
