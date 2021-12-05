@@ -2,7 +2,7 @@ use crate::Code;
 
 #[derive(Debug, PartialEq)]
 pub enum TokenKind {
-    Reserved(char),
+    Reserved(String),
     Num(i32),
     Eof,
 }
@@ -14,9 +14,9 @@ pub struct Token {
 }
 
 impl Token {
-    fn new_reserved_token(c: char, cur: usize) -> Self {
+    fn new_reserved_token(s: String, cur: usize) -> Self {
         Token {
-            kind: TokenKind::Reserved(c),
+            kind: TokenKind::Reserved(s),
             cur,
         }
     }
@@ -62,7 +62,7 @@ impl Tokens {
                 let pos = code.cur();
                 tokens
                     .inner
-                    .push(Token::new_reserved_token(code.take_char(), pos));
+                    .push(Token::new_reserved_token(code.take_string(1), pos));
                 continue;
             }
 
@@ -93,9 +93,9 @@ impl Tokens {
         self.peek().kind != TokenKind::Eof
     }
 
-    pub fn consume(&mut self, op: char) -> bool {
-        match self.peek().kind {
-            TokenKind::Reserved(c) if c == op => {
+    pub fn consume(&mut self, op: &str) -> bool {
+        match &self.peek().kind {
+            TokenKind::Reserved(s) if s == op => {
                 self.next();
                 true
             }
@@ -103,9 +103,9 @@ impl Tokens {
         }
     }
 
-    pub fn expect(&mut self, op: char) {
-        match self.peek().kind {
-            TokenKind::Reserved(c) if c == op => {
+    pub fn expect(&mut self, op: &str) {
+        match &self.peek().kind {
+            TokenKind::Reserved(s) if s == op => {
                 self.next();
             }
             _ => panic!("unexpect token. token: {:?}", self.peek()),

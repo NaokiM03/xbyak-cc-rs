@@ -42,9 +42,9 @@ impl Node {
 
 impl Node {
     fn primary(tokens: &mut Tokens) -> Self {
-        if tokens.consume('(') {
+        if tokens.consume("(") {
             let node = Self::expr(tokens);
-            tokens.expect(')');
+            tokens.expect(")");
             return node;
         }
 
@@ -52,10 +52,10 @@ impl Node {
     }
 
     fn unary(tokens: &mut Tokens) -> Self {
-        if tokens.consume('+') {
+        if tokens.consume("+") {
             return Self::primary(tokens);
         }
-        if tokens.consume('-') {
+        if tokens.consume("-") {
             return Self::new_node(NodeKind::Sub, Self::new_num_node(0), Self::unary(tokens));
         }
         Self::primary(tokens)
@@ -65,9 +65,9 @@ impl Node {
         let mut node = Self::unary(tokens);
 
         while tokens.is_not_end() {
-            if tokens.consume('*') {
+            if tokens.consume("*") {
                 node = Self::new_node(NodeKind::Mul, node, Self::unary(tokens));
-            } else if tokens.consume('/') {
+            } else if tokens.consume("/") {
                 node = Self::new_node(NodeKind::Div, node, Self::unary(tokens));
             } else {
                 return node;
@@ -80,9 +80,9 @@ impl Node {
         let mut node = Self::mul(tokens);
 
         while tokens.is_not_end() {
-            if tokens.consume('+') {
+            if tokens.consume("+") {
                 node = Self::new_node(NodeKind::Add, node, Self::mul(tokens));
-            } else if tokens.consume('-') {
+            } else if tokens.consume("-") {
                 node = Self::new_node(NodeKind::Sub, node, Self::mul(tokens));
             } else {
                 return node;

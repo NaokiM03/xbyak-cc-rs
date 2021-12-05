@@ -26,13 +26,24 @@ impl Code {
         self.chars[self.cur]
     }
 
+    fn is_end(&self) -> bool {
+        self.chars.len() <= self.cur
+    }
+
     pub fn is_not_end(&self) -> bool {
         self.chars.len() > self.cur
     }
 
-    pub fn take_char(&mut self) -> char {
-        let result = self.peek();
-        self.next();
+    pub fn take_string(&mut self, len: usize) -> String {
+        let mut result = String::new();
+        for _ in 0..len {
+            if self.is_end() && self.peek().is_whitespace() && self.peek().is_ascii_digit() {
+                panic!()
+            }
+
+            result += &self.peek().to_string();
+            self.next();
+        }
         result
     }
 
