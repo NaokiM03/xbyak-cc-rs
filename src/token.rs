@@ -11,13 +11,15 @@ pub enum TokenKind {
 pub struct Token {
     kind: TokenKind,
     cur: usize,
+    len: usize,
 }
 
 impl Token {
-    fn new_reserved_token(s: String, cur: usize) -> Self {
+    fn new_reserved_token(s: &str, cur: usize) -> Self {
         Token {
-            kind: TokenKind::Reserved(s),
+            kind: TokenKind::Reserved(s.to_owned()),
             cur,
+            len: s.len(),
         }
     }
 
@@ -25,6 +27,7 @@ impl Token {
         Token {
             kind: TokenKind::Num(n),
             cur,
+            len: 0,
         }
     }
 
@@ -32,6 +35,7 @@ impl Token {
         Token {
             kind: TokenKind::Eof,
             cur: 0,
+            len: 0,
         }
     }
 }
@@ -52,25 +56,40 @@ impl Tokens {
                 continue;
             }
 
+            if code.remaining_number() > 2
+                && (code.peek_n(2) == "=="
+                    || code.peek_n(2) == "!="
+                    || code.peek_n(2) == "<="
+                    || code.peek_n(2) == ">=")
+            {
+                let cur = code.cur();
+                tokens
+                    .inner
+                    .push(Token::new_reserved_token(&code.take_string(2), cur));
+                continue;
+            }
+
             if code.peek() == '+'
                 || code.peek() == '-'
                 || code.peek() == '*'
                 || code.peek() == '/'
                 || code.peek() == '('
                 || code.peek() == ')'
+                || code.peek() == '<'
+                || code.peek() == '>'
             {
-                let pos = code.cur();
+                let cur = code.cur();
                 tokens
                     .inner
-                    .push(Token::new_reserved_token(code.take_string(1), pos));
+                    .push(Token::new_reserved_token(&code.take_string(1), cur));
                 continue;
             }
 
             if code.peek().is_ascii_digit() {
-                let pos = code.cur();
+                let cur = code.cur();
                 tokens
                     .inner
-                    .push(Token::new_num_token(code.take_number(), pos));
+                    .push(Token::new_num_token(code.take_number(), cur));
                 continue;
             }
 

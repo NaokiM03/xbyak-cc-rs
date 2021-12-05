@@ -22,8 +22,19 @@ impl Code {
         self.cur += 1;
     }
 
+    pub fn remaining_number(&self) -> usize {
+        self.chars.len() - self.cur
+    }
+
     pub fn peek(&self) -> char {
         self.chars[self.cur]
+    }
+
+    pub fn peek_n(&self, n: usize) -> String {
+        if self.chars.len() <= self.cur + n {
+            return "".to_owned();
+        }
+        self.chars[self.cur..self.cur + n].iter().collect()
     }
 
     fn is_end(&self) -> bool {

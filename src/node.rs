@@ -3,7 +3,7 @@ use crate::{
         reg::{RAX, RDI},
         Pop, Push,
     },
-    Add, Div, Mul, Sub, Tokens, Xbyak,
+    Add, Cmp, Div, Mul, Sub, Tokens, Xbyak,
 };
 
 #[derive(Debug)]
@@ -12,6 +12,10 @@ pub enum NodeKind {
     Sub,      // -
     Mul,      // *
     Div,      // /
+    Eq,       // ==
+    Ne,       // !=
+    Lt,       // <
+    Le,       // <=
     Num(i32), // int
 }
 
@@ -76,7 +80,7 @@ impl Node {
         node // if tokens.is_end()
     }
 
-    pub fn expr(tokens: &mut Tokens) -> Self {
+    fn add(tokens: &mut Tokens) -> Self {
         let mut node = Self::mul(tokens);
 
         while tokens.is_not_end() {
@@ -89,6 +93,44 @@ impl Node {
             }
         }
         node // if tokens.is_end()
+    }
+
+    fn relational(tokens: &mut Tokens) -> Self {
+        let mut node = Self::add(tokens);
+
+        while tokens.is_not_end() {
+            if tokens.consume("<") {
+                node = Self::new_node(NodeKind::Lt, node, Self::add(tokens));
+            } else if tokens.consume("<=") {
+                node = Self::new_node(NodeKind::Le, node, Self::add(tokens));
+            } else if tokens.consume(">") {
+                node = Self::new_node(NodeKind::Lt, Self::add(tokens), node);
+            } else if tokens.consume(">=") {
+                node = Self::new_node(NodeKind::Le, Self::add(tokens), node);
+            } else {
+                return node;
+            }
+        }
+        node
+    }
+
+    fn equality(tokens: &mut Tokens) -> Self {
+        let mut node = Self::relational(tokens);
+
+        while tokens.is_not_end() {
+            if tokens.consume("==") {
+                node = Self::new_node(NodeKind::Eq, node, Self::relational(tokens));
+            } else if tokens.consume("!=") {
+                node = Self::new_node(NodeKind::Ne, node, Self::relational(tokens));
+            } else {
+                return node;
+            }
+        }
+        node
+    }
+
+    pub fn expr(tokens: &mut Tokens) -> Self {
+        Self::equality(tokens)
     }
 
     pub fn gen(node: Node, xbyak: &mut Xbyak) {
@@ -108,6 +150,26 @@ impl Node {
             NodeKind::Sub => xbyak.sub(),
             NodeKind::Mul => xbyak.mul(),
             NodeKind::Div => xbyak.div(),
+            NodeKind::Eq => {
+                xbyak.cmp();
+                xbyak.sete();
+                xbyak.movzx();
+            }
+            NodeKind::Ne => {
+                xbyak.cmp();
+                xbyak.setne();
+                xbyak.movzx();
+            }
+            NodeKind::Lt => {
+                xbyak.cmp();
+                xbyak.setl();
+                xbyak.movzx();
+            }
+            NodeKind::Le => {
+                xbyak.cmp();
+                xbyak.setle();
+                xbyak.movzx();
+            }
             _ => panic!(),
         }
 

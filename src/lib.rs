@@ -1,5 +1,5 @@
 mod xbyak;
-use xbyak::{reg::*, Add, Div, Mul, Pop, Ret, Sub, Xbyak};
+use xbyak::{reg::*, Add, Cmp, Div, Mul, Pop, Ret, Sub, Xbyak};
 
 mod code;
 use code::Code;
@@ -38,4 +38,23 @@ fn test() {
     assert_eq!(cc("-10+20"), 10);
     assert_eq!(cc("- -10"), 10);
     assert_eq!(cc("- - +10"), 10);
+
+    assert_eq!(cc("0==1"), 0);
+    assert_eq!(cc("42==42"), 1);
+    assert_eq!(cc("0!=1"), 1);
+    assert_eq!(cc("42!=42"), 0);
+
+    assert_eq!(cc("0<1"), 1);
+    assert_eq!(cc("1<1"), 0);
+    assert_eq!(cc("2<1"), 0);
+    assert_eq!(cc("0<=1"), 1);
+    assert_eq!(cc("1<=1"), 1);
+    assert_eq!(cc("2<=1"), 0);
+
+    assert_eq!(cc("1>0"), 1);
+    assert_eq!(cc("1>1"), 0);
+    assert_eq!(cc("1>2"), 0);
+    assert_eq!(cc("1>=0"), 1);
+    assert_eq!(cc("1>=1"), 1);
+    assert_eq!(cc("1>=2"), 0);
 }
