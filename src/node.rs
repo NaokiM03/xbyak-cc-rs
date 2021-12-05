@@ -51,14 +51,24 @@ impl Node {
         Self::new_num_node(tokens.expect_number())
     }
 
+    fn unary(tokens: &mut Tokens) -> Self {
+        if tokens.consume('+') {
+            return Self::primary(tokens);
+        }
+        if tokens.consume('-') {
+            return Self::new_node(NodeKind::Sub, Self::new_num_node(0), Self::unary(tokens));
+        }
+        Self::primary(tokens)
+    }
+
     fn mul(tokens: &mut Tokens) -> Self {
-        let mut node = Self::primary(tokens);
+        let mut node = Self::unary(tokens);
 
         while tokens.is_not_end() {
             if tokens.consume('*') {
-                node = Self::new_node(NodeKind::Mul, node, Self::primary(tokens));
+                node = Self::new_node(NodeKind::Mul, node, Self::unary(tokens));
             } else if tokens.consume('/') {
-                node = Self::new_node(NodeKind::Div, node, Self::primary(tokens));
+                node = Self::new_node(NodeKind::Div, node, Self::unary(tokens));
             } else {
                 return node;
             }

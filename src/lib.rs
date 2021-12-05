@@ -35,4 +35,7 @@ fn test() {
     assert_eq!(cc("5+6*7"), 47);
     assert_eq!(cc("5*(9-6)"), 15);
     assert_eq!(cc("(3+5)/2"), 4);
+    assert_eq!(cc("-10+20"), 10);
+    assert_eq!(cc("- -10"), 10);
+    assert_eq!(cc("- - +10"), 10);
 }
