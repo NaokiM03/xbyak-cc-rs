@@ -71,60 +71,63 @@ public:
     }
 };
 
-extern "C" XbyakCore *_new()
+extern "C"
 {
-    return new XbyakCore();
-}
-extern "C" int _gen_code(XbyakCore x)
-{
-    auto (*func)() = x.getCode<int (*)()>();
-    return func();
-}
-extern "C" void _delete(XbyakCore *x)
-{
-    delete x;
-}
+    XbyakCore *_new()
+    {
+        return new XbyakCore();
+    }
+    int _gen_code(XbyakCore x)
+    {
+        auto (*func)() = x.getCode<int (*)()>();
+        return func();
+    }
+    void _delete(XbyakCore *x)
+    {
+        delete x;
+    }
 
-extern "C" void _mov_r_i(XbyakCore x, int reg, int n)
-{
-    x._mov(x.reg_from_int(reg), n);
-}
-extern "C" void _mov_r_r(XbyakCore x, int reg1, int reg2)
-{
-    x._mov(x.reg_from_int(reg1), x.reg_from_int(reg2));
-}
+    void _mov_r_i(XbyakCore x, int reg, int n)
+    {
+        x._mov(x.reg_from_int(reg), n);
+    }
+    void _mov_r_r(XbyakCore x, int reg1, int reg2)
+    {
+        x._mov(x.reg_from_int(reg1), x.reg_from_int(reg2));
+    }
 
-extern "C" void _push_i(XbyakCore x, int n)
-{
-    x._push(n);
-}
-extern "C" void _push_r(XbyakCore x, int reg)
-{
-    x._push(x.reg_from_int(reg));
-}
-extern "C" void _pop(XbyakCore x, int reg)
-{
-    x._pop(x.reg_from_int(reg));
-}
+    void _push_i(XbyakCore x, int n)
+    {
+        x._push(n);
+    }
+    void _push_r(XbyakCore x, int reg)
+    {
+        x._push(x.reg_from_int(reg));
+    }
+    void _pop(XbyakCore x, int reg)
+    {
+        x._pop(x.reg_from_int(reg));
+    }
 
-extern "C" void _add(XbyakCore x)
-{
-    x._add();
-}
-extern "C" void _sub(XbyakCore x)
-{
-    x._sub();
-}
-extern "C" void _mul(XbyakCore x)
-{
-    x._mul();
-}
-extern "C" void _div(XbyakCore x)
-{
-    x._div();
-}
+    void _add(XbyakCore x)
+    {
+        x._add();
+    }
+    void _sub(XbyakCore x)
+    {
+        x._sub();
+    }
+    void _mul(XbyakCore x)
+    {
+        x._mul();
+    }
+    void _div(XbyakCore x)
+    {
+        x._div();
+    }
 
-extern "C" void _ret(XbyakCore x)
-{
-    x._ret();
+    void _ret(XbyakCore x)
+    {
+        x._ret();
+    }
 }

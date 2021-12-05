@@ -124,7 +124,6 @@ impl Div for Xbyak {
     }
 }
 
-
 pub trait Ret {
     fn ret(&mut self);
 }

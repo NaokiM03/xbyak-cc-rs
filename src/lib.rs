@@ -1,5 +1,5 @@
 mod xbyak;
-use xbyak::{reg::*, Add, Div, Move, Mul, Pop, Ret, Sub, Xbyak};
+use xbyak::{reg::*, Add, Div, Mul, Pop, Ret, Sub, Xbyak};
 
 mod code;
 use code::Code;
