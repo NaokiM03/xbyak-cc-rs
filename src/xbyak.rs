@@ -35,7 +35,7 @@ impl Xbyak {
         unsafe { _gen_code(self.jit) }
     }
     pub fn delete(&mut self) {
-        unsafe { _delete(self.jit) };
+        unsafe { _delete(self.jit) }
     }
 }
 
@@ -129,6 +129,6 @@ pub trait Ret {
 }
 impl Ret for Xbyak {
     fn ret(&mut self) {
-        unsafe { _ret(self.jit) };
+        unsafe { _ret(self.jit) }
     }
 }
