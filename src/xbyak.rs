@@ -52,6 +52,13 @@ extern "C" {
     fn _mul(this: *mut XbyakCore);
     fn _div(this: *mut XbyakCore);
 
+    fn _cmp(this: *mut XbyakCore);
+    fn _sete(this: *mut XbyakCore);
+    fn _setne(this: *mut XbyakCore);
+    fn _setl(this: *mut XbyakCore);
+    fn _setle(this: *mut XbyakCore);
+    fn _movzx(this: *mut XbyakCore);
+
     fn _ret(this: *mut XbyakCore);
 }
 
@@ -121,6 +128,35 @@ pub trait Div {
 impl Div for Xbyak {
     fn div(&mut self) {
         unsafe { _div(self.jit) }
+    }
+}
+
+pub trait Cmp {
+    fn cmp(&mut self);
+    fn sete(&mut self);
+    fn setne(&mut self);
+    fn setl(&mut self);
+    fn setle(&mut self);
+    fn movzx(&mut self);
+}
+impl Cmp for Xbyak {
+    fn cmp(&mut self) {
+        unsafe { _cmp(self.jit) }
+    }
+    fn sete(&mut self) {
+        unsafe { _sete(self.jit) }
+    }
+    fn setne(&mut self) {
+        unsafe { _setne(self.jit) }
+    }
+    fn setl(&mut self) {
+        unsafe { _setl(self.jit) }
+    }
+    fn setle(&mut self) {
+        unsafe { _setle(self.jit) }
+    }
+    fn movzx(&mut self) {
+        unsafe { _movzx(self.jit) }
     }
 }
 

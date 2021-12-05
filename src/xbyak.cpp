@@ -58,6 +58,31 @@ public:
         idiv(rdi);
     }
 
+    void _cmp()
+    {
+        cmp(rax, rdi);
+    }
+    void _sete()
+    {
+        sete(al);
+    }
+    void _setne()
+    {
+        setne(al);
+    }
+    void _setl()
+    {
+        setl(al);
+    }
+    void _setle()
+    {
+        setle(al);
+    }
+    void _movzx()
+    {
+        movzx(rax, al);
+    }
+
     void _ret()
     {
         ret();
@@ -117,6 +142,31 @@ extern "C"
     void _div(XbyakCore x)
     {
         x._div();
+    }
+
+    void _cmp(XbyakCore x)
+    {
+        x._cmp();
+    }
+    void _sete(XbyakCore x)
+    {
+        x._sete();
+    }
+    void _setne(XbyakCore x)
+    {
+        x._setne();
+    }
+    void _setl(XbyakCore x)
+    {
+        x._setl();
+    }
+    void _setle(XbyakCore x)
+    {
+        x._setle();
+    }
+    void _movzx(XbyakCore x)
+    {
+        x._movzx();
     }
 
     void _ret(XbyakCore x)
