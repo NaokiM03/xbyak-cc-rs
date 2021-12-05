@@ -3,27 +3,20 @@
 class XbyakCore : public Xbyak::CodeGenerator
 {
 public:
-    Xbyak::Reg64 reg_rax;
-    Xbyak::Reg64 reg_rdi;
-
     Xbyak::Reg64 reg_from_int(int n)
     {
         switch (n)
         {
         case 0:
-            return reg_rax;
+            return rax;
         case 1:
-            return reg_rdi;
+            return rdi;
         default:
             throw "Error: failed to parse int to Xbyak::Reg64";
         }
     }
 
-    XbyakCore()
-    {
-        reg_rax = rax;
-        reg_rdi = rdi;
-    }
+    XbyakCore() {}
 
     void _mov(Xbyak::Reg64 reg, int n)
     {
